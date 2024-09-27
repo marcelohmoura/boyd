@@ -1,6 +1,6 @@
 # boyd
 
-FIXME
+Boyd is a product registration service built in Clojure and Datomic.
 
 ## Usage
 
