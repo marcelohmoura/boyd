@@ -1,7 +1,10 @@
 (ns boyd.handler
   (:require [compojure.api.sweet :refer :all]
             [ring.util.http-response :refer :all]
-            [schema.core :as s]))
+            [schema.core :as s]
+            [boyd.wire.out.product :as out.product]
+            [boyd.wire.in.product :as in.product]
+            [boyd.http-in :as http-in]))
 
 (s/defschema Pizza
   {:name s/Str
@@ -16,8 +19,8 @@
      {:ui "/"
       :spec "/swagger.json"
       :data {:info {:title "Boyd"
-                    :description "Compojure Api example"}
-             :tags [{:name "api", :description "some apis"}]}}}
+                    :description "A product registration API"}
+             :tags [{:name "api", :description "Operations"}]}}}
 
     (context "/api" []
       :tags ["api"]
@@ -28,8 +31,8 @@
         :summary "adds two numbers together"
         (ok {:result (+ x y)}))
 
-      (POST "/echo" []
-        :return Pizza
-        :body [pizza Pizza]
+      (POST "/register" []
+        :return out.product/Product
+        :body [product in.product/Product]
         :summary "echoes a Pizza"
-        (ok pizza)))))
+        (http-in/register-product! product)))))
