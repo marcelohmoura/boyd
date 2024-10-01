@@ -34,5 +34,5 @@
       (POST "/register" []
         :return out.product/Product
         :body [product in.product/Product]
-        :summary "echoes a Pizza"
-        (http-in/register-product! product)))))
+        :summary "Register a product"
+        (ok (http-in/register-product! product))))))
