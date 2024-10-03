@@ -17,7 +17,7 @@
         (is (= (:result body) 3))))
 
   (with-redefs [helpers/->uuid (fn [] #uuid"2f7f1ec2-5ada-4e63-a595-9ab83c839e8b")]
-    (testing "Test POST request to /echo returns expected response"
+    (testing "Should register a valid product"
       (let [product {:name        "Laptop Lenovo Ideapad"
                      :price       1958.58
                      :category    "Laptops"

@@ -9,7 +9,7 @@
   [{:keys [name price category description]} :- in.product/Product]
   {:product/id          (helpers/->uuid)
    :product/name        name
-   :product/price       price
+   :product/price       (bigdec price)
    :product/category    category
    :product/description description})
 

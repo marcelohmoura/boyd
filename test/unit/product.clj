@@ -16,7 +16,7 @@
     (testing "Given a product should return a internal product model"
       (is (= {:product/id          uuid
               :product/name        "Lenovo Ideapad"
-              :product/price       1858.85
+              :product/price       1858.85M
               :product/category    :laptops
               :product/description "A Intel core i3 10th, 4GB and 128GB SSD"}
              (adapters/product:wire->internal product))))))
