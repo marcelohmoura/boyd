@@ -35,4 +35,4 @@
         :return out.product/Product
         :body [product in.product/Product]
         :summary "Register a product"
-        (ok (http-in/register-product! product))))))
+        (http-in/register-product! product)))))

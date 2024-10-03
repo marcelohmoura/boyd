@@ -8,5 +8,9 @@
 
 (s/defn register-product! :- out.product/Product
   [product :- in.product/Product]
-  (-> (adapters/product:wire->internal product)
-      db/register-product!))
+  (try
+    (-> (adapters/product:wire->internal product)
+        db/register-product!
+        http-response/ok)
+    (catch Exception e
+      (.getMessage e))))
