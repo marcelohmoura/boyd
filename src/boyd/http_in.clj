@@ -7,3 +7,7 @@
 (s/defn register-product! :- out.product/Product
   [product :- in.product/Product]
   (controller/register-product! product))
+
+(s/defn lookup-product! :- out.product/Product
+  [product-name :- s/Str]
+  (controller/lookup-product! product-name))

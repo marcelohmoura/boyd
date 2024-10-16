@@ -14,3 +14,9 @@
         http-response/ok)
     (catch Exception e
       (.getMessage e))))
+
+(s/defn lookup-product! :- out.product/Product
+  [product-name :- s/Str]
+  (if-let [product (db/lookup-product! product-name)]
+    (http-response/ok {:result product})
+    (http-response/not-found)))

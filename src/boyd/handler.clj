@@ -25,11 +25,11 @@
     (context "/api" []
       :tags ["api"]
 
-      (GET "/plus" []
-        :return {:result Long}
-        :query-params [x :- Long, y :- Long]
-        :summary "adds two numbers together"
-        (ok {:result (+ x y)}))
+      (GET "/lookup-product" []
+        :return {:result out.product/Product}
+        :query-params [product-name :- s/Str]
+        :summary "Lookup for a product by product name"
+        (http-in/lookup-product! product-name))
 
       (POST "/register" []
         :return out.product/Product
