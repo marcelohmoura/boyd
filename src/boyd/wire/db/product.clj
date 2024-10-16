@@ -6,16 +6,16 @@
 
               {:db/ident       :product/name
                :db/valueType   :db.type/string
-               :db/cardinality :db.cardinality/many}
+               :db/cardinality :db.cardinality/one}
 
               {:db/ident       :product/price
                :db/valueType   :db.type/bigdec
-               :db/cardinality :db.cardinality/many}
+               :db/cardinality :db.cardinality/one}
 
               {:db/ident       :product/category
                :db/valueType   :db.type/string
-               :db/cardinality :db.cardinality/many}
+               :db/cardinality :db.cardinality/one}
 
               {:db/ident       :product/description
                :db/valueType   :db.type/string
-               :db/cardinality :db.cardinality/many}])
+               :db/cardinality :db.cardinality/one}])
