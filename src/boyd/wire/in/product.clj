@@ -6,3 +6,6 @@
    :price       s/Num
    :category    s/Str
    :description s/Str})
+
+(s/defschema UpdateProduct
+  (assoc Product :id s/Uuid))
