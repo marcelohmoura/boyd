@@ -30,4 +30,15 @@
                                       :product/category    :laptops
                                       :product/description "A Intel core i3 10th, 4GB and 128GB SSD"})))))
 
-
+(deftest update-product:wire->internal
+  (testing "Given a product to update should return a internal product model"
+    (is (= {:product/id          uuid
+            :product/name        "Lenovo Ideapad"
+            :product/price       1858.85M
+            :product/category    :laptops
+            :product/description "A Intel core i3 10th, 4GB and 256GB SSD"}
+           (adapters/update-product:wire->internal {:id          uuid
+                                                    :name        "Lenovo Ideapad"
+                                                    :price       1858.85M
+                                                    :category    :laptops
+                                                    :description "A Intel core i3 10th, 4GB and 256GB SSD"})))))
