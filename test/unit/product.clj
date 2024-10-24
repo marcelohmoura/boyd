@@ -32,12 +32,14 @@
 
 (deftest update-product:wire->internal
   (testing "Given a product to update should return a internal product model"
-    (is (= {:product/id          uuid
+    (is (= {:db/id               17592186045418
+            :product/id          uuid
             :product/name        "Lenovo Ideapad"
             :product/price       1858.85M
             :product/category    :laptops
             :product/description "A Intel core i3 10th, 4GB and 256GB SSD"}
-           (adapters/update-product:wire->internal {:id          uuid
+           (adapters/update-product:wire->internal 17592186045418
+                                                   {:id          uuid
                                                     :name        "Lenovo Ideapad"
                                                     :price       1858.85M
                                                     :category    :laptops
