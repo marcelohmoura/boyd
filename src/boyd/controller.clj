@@ -20,3 +20,14 @@
   (if-let [product (db/lookup-product! product-name)]
     (http-response/ok {:result product})
     (http-response/not-found)))
+
+(s/defn update-product!
+  [{:keys [id] :as product} :- in.product/UpdateProduct]
+  (if-let [product-entity (db/lookup-product-entity! id)]
+    (try
+      (-> (adapters/update-product:wire->internal product-entity product)
+          db/update-product!)
+      (http-response/ok)
+      (catch Exception e
+        (.getMessage e)))
+    (http-response/not-found)))

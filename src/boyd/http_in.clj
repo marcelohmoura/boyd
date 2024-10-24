@@ -11,3 +11,7 @@
 (s/defn lookup-product! :- out.product/Product
   [product-name :- s/Str]
   (controller/lookup-product! product-name))
+
+(s/defn update-product!
+  [product :- in.product/UpdateProduct]
+  (controller/update-product! product))

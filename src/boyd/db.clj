@@ -23,6 +23,11 @@
     [?e :product/category ?category]
     [?e :product/description ?description]])
 
+(def get-product-entity
+  '[:find ?e
+    :in $ ?id
+    :where [?e :product/id ?id]])
+
 (s/defn register-product! :- out.product/Product
   [product :- models/Product]
   (d/transact conn [product])
@@ -31,3 +36,11 @@
 (s/defn lookup-product! :- out.product/Product
   [product-name :- s/Str]
   (first (d/q get-product-by-name db product-name)))
+
+(s/defn lookup-product-entity! :- s/Num
+  [product-id :- s/Uuid]
+  (first (first (d/q get-product-entity db product-id))))
+
+(s/defn update-product!
+  [product :- models/Product]
+  (d/transact conn [product]))

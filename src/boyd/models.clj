@@ -7,3 +7,6 @@
    :product/price       s/Num
    :product/category    s/Str
    :product/description s/Str})
+
+(s/defschema UpdateProduct
+  (assoc Product :db/id s/Num))

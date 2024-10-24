@@ -21,9 +21,11 @@
    :category    (:product/category product)
    :description (:product/description product)})
 
-(s/defn update-product:wire->internal :- models/Product
-  [{:keys [id name price category description]} :- in.product/UpdateProduct]
-  {:product/id          id
+(s/defn update-product:wire->internal :- models/UpdateProduct
+  [product-entity :- s/Num
+   {:keys [id name price category description]} :- in.product/UpdateProduct]
+  {:db/id               product-entity
+   :product/id          id
    :product/name        name
    :product/price       (bigdec price)
    :product/category    category

@@ -35,4 +35,10 @@
         :return out.product/Product
         :body [product in.product/Product]
         :summary "Register a product"
-        (http-in/register-product! product)))))
+        (http-in/register-product! product))
+
+      (PUT "/update" []
+        ;;:return out.product/Product
+        :body [product in.product/UpdateProduct]
+        :summary "Update a product"
+        (http-in/update-product! product)))))
