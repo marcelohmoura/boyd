@@ -62,3 +62,18 @@
                             (mock/content-type "application/json")
                             (mock/body (cheshire/generate-string product))))]
       (is (= (:status response) 404)))))
+
+(deftest delete-product
+  (testing "Should delete an existent product"
+    (let [product {:id #uuid"2f7f1ec2-5ada-4e63-a595-9ab83c839e8b"}
+          response (app (-> (mock/request :delete "/api/delete")
+                            (mock/content-type "application/json")
+                            (mock/body (cheshire/generate-string product))))]
+      (is (= (:status response) 204))))
+
+  (testing "Cannot delete a non existent product"
+    (let [product {:id #uuid"a95e183c-af33-48eb-8212-05ed75f132c7"}
+          response (app (-> (mock/request :delete "/api/delete")
+                            (mock/content-type "application/json")
+                            (mock/body (cheshire/generate-string product))))]
+      (is (= (:status response) 404)))))
