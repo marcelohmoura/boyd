@@ -31,3 +31,13 @@
       (catch Exception e
         (.getMessage e)))
     (http-response/not-found)))
+
+(s/defn delete-product!
+  [id :- s/Uuid]
+  (if-let [product-entity (db/lookup-product-entity! id)]
+    (try
+      (db/delete-product! product-entity)
+      (http-response/no-content)
+      (catch Exception e
+        (.getMessage e)))
+    (http-response/not-found)))

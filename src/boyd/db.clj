@@ -44,3 +44,10 @@
 (s/defn update-product!
   [product :- models/Product]
   (d/transact conn [product]))
+
+(s/defn delete-product!
+  [id :- s/Uuid]
+  (let [entity (d/entity (d/db conn) id)
+        retracts (for [[attr value] entity]
+                   [:db/retract id attr value])]
+    (d/transact conn retracts)))

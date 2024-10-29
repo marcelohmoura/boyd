@@ -15,3 +15,7 @@
 (s/defn update-product!
   [product :- in.product/UpdateProduct]
   (controller/update-product! product))
+
+(s/defn delete-product!
+  [{:keys [id]} :- in.product/DeleteProduct]
+  (controller/delete-product! id))

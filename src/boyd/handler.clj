@@ -38,7 +38,11 @@
         (http-in/register-product! product))
 
       (PUT "/update" []
-        ;;:return out.product/Product
         :body [product in.product/UpdateProduct]
         :summary "Update a product"
-        (http-in/update-product! product)))))
+        (http-in/update-product! product))
+
+      (DELETE "/delete" []
+        :body [product in.product/DeleteProduct]
+        :summary "Delete a product"
+        (http-in/delete-product! product)))))

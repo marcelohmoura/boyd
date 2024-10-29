@@ -9,3 +9,6 @@
 
 (s/defschema UpdateProduct
   (assoc Product :id s/Uuid))
+
+(s/defschema DeleteProduct
+  {:id s/Uuid})
