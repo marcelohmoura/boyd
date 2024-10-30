@@ -5,17 +5,21 @@
             [boyd.controller :as controller]))
 
 (s/defn register-product! :- out.product/Product
-  [product :- in.product/Product]
-  (controller/register-product! product))
+  [db-conn :- s/Any
+   product :- in.product/Product]
+  (controller/register-product! db-conn product))
 
 (s/defn lookup-product! :- out.product/Product
-  [product-name :- s/Str]
-  (controller/lookup-product! product-name))
+  [db-conn :- s/Any
+   product-name :- s/Str]
+  (controller/lookup-product! db-conn product-name))
 
 (s/defn update-product!
-  [product :- in.product/UpdateProduct]
-  (controller/update-product! product))
+  [db-conn :- s/Any
+   product :- in.product/UpdateProduct]
+  (controller/update-product! db-conn product))
 
 (s/defn delete-product!
-  [{:keys [id]} :- in.product/DeleteProduct]
-  (controller/delete-product! id))
+  [db-conn :- s/Any
+   {:keys [id]} :- in.product/DeleteProduct]
+  (controller/delete-product! db-conn id))

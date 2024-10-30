@@ -7,36 +7,40 @@
             [schema.core :as s]))
 
 (s/defn register-product! :- out.product/Product
-  [product :- in.product/Product]
+  [db-conn :- s/Any
+   product :- in.product/Product]
   (try
-    (-> (adapters/product:wire->internal product)
-        db/register-product!
-        http-response/ok)
+    (->> (adapters/product:wire->internal product)
+         (db/register-product! db-conn)
+         http-response/ok)
     (catch Exception e
       (.getMessage e))))
 
 (s/defn lookup-product! :- out.product/Product
-  [product-name :- s/Str]
-  (if-let [product (db/lookup-product! product-name)]
+  [db-conn :- s/Any
+   product-name :- s/Str]
+  (if-let [product (db/lookup-product! db-conn product-name)]
     (http-response/ok {:result product})
     (http-response/not-found)))
 
 (s/defn update-product!
-  [{:keys [id] :as product} :- in.product/UpdateProduct]
-  (if-let [product-entity (db/lookup-product-entity! id)]
+  [db-conn :- s/Any
+   {:keys [id] :as product} :- in.product/UpdateProduct]
+  (if-let [product-entity (db/lookup-product-entity! db-conn id)]
     (try
-      (-> (adapters/update-product:wire->internal product-entity product)
-          db/update-product!)
+      (->> (adapters/update-product:wire->internal product-entity product)
+           (db/update-product! db-conn))
       (http-response/ok)
       (catch Exception e
         (.getMessage e)))
     (http-response/not-found)))
 
 (s/defn delete-product!
-  [id :- s/Uuid]
-  (if-let [product-entity (db/lookup-product-entity! id)]
+  [db-conn :- s/Any
+   id :- s/Uuid]
+  (if-let [product-entity (db/lookup-product-entity! db-conn id)]
     (try
-      (db/delete-product! product-entity)
+      (db/delete-product! db-conn product-entity)
       (http-response/no-content)
       (catch Exception e
         (.getMessage e)))

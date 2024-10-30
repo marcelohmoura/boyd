@@ -6,5 +6,7 @@
   :uberjar-name "server.jar"
   :profiles {:dev {:dependencies [[javax.servlet/javax.servlet-api "3.1.0"]
                                   [ring/ring-mock "0.3.2"]
-                                  [com.datomic/peer "1.0.7187"]]
+                                  [com.datomic/peer "1.0.7187"]
+                                  [environ "1.2.0"]
+                                  [com.stuartsierra/component "1.1.0"]]
                    :plugins      [[lein-ring "0.12.5"]]}})

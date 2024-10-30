@@ -1,15 +1,25 @@
 (ns boyd.db
-  (:require [boyd.adapters :as adapters]
+  (:require [com.stuartsierra.component :as component]
+            [boyd.config :refer [db-uri]]
+            [boyd.adapters :as adapters]
             [boyd.models :as models]
             [boyd.wire.out.product :as out.product]
+            [boyd.wire.db.product :as db.product]
             [schema.core :as s]
             [datomic.api :as d]))
 
-(def db-uri "datomic:dev://localhost:4334/dev")
+(defrecord Database []
+  component/Lifecycle
+  (start [this]
+    (assoc this :conn (d/connect (db-uri))))
+  (stop [this]
+    (d/release (get this :conn))
+    (assoc this :conn nil)))
 
-(def conn (d/connect db-uri))
-
-(def db (d/db conn))
+(defn new-database []
+  (d/create-database (db-uri))
+  (d/transact (d/connect (db-uri)) db.product/Product)
+  (map->Database {}))
 
 (def get-product-by-name
   '[:find ?id ?name ?price ?category ?description
@@ -29,25 +39,30 @@
     :where [?e :product/id ?id]])
 
 (s/defn register-product! :- out.product/Product
-  [product :- models/Product]
-  (d/transact conn [product])
+  [db-conn :- s/Any
+   product :- models/Product]
+  (d/transact db-conn [product])
   (adapters/product:db->out product))
 
 (s/defn lookup-product! :- out.product/Product
-  [product-name :- s/Str]
-  (first (d/q get-product-by-name db product-name)))
+  [db-conn :- s/Any
+   product-name :- s/Str]
+  (first (d/q get-product-by-name (d/db db-conn) product-name)))
 
 (s/defn lookup-product-entity! :- s/Num
-  [product-id :- s/Uuid]
-  (first (first (d/q get-product-entity db product-id))))
+  [db-conn :- s/Any
+   product-id :- s/Uuid]
+  (first (first (d/q get-product-entity (d/db db-conn) product-id))))
 
 (s/defn update-product!
-  [product :- models/Product]
-  (d/transact conn [product]))
+  [db-conn :- s/Any
+   product :- models/Product]
+  (d/transact db-conn [product]))
 
 (s/defn delete-product!
-  [id :- s/Uuid]
-  (let [entity (d/entity (d/db conn) id)
+  [db-conn :- s/Any
+   id :- s/Uuid]
+  (let [entity (d/entity db-conn id)
         retracts (for [[attr value] entity]
                    [:db/retract id attr value])]
-    (d/transact conn retracts)))
+    (d/transact db-conn retracts)))
